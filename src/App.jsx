@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -26,19 +32,23 @@ function App() {
 
 function AppContent({ user, setUser }) {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/login" || location.pathname === "/signup";
+  const hideNavbar =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <div className="min-h-screen bg-gray-100">
       {!hideNavbar && <Navbar user={user} setUser={setUser} />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/signup" element={<Signup setUser={setUser} />} />
+        <Route path="/" element={<Signup setUser={setUser} />} />
         <Route path="/scan" element={<ScanWaste />} />
         <Route path="/stations" element={<DisposalStations />} />
         <Route path="/rewards" element={<Rewards />} />
-        <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/login" />} />
+        <Route
+          path="/profile"
+          element={user ? <Profile user={user} /> : <Navigate to="/login" />}
+        />
       </Routes>
     </div>
   );
