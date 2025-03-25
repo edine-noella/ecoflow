@@ -12,7 +12,7 @@ function Signup({ setUser }) {
     const user = { name, email };
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
-    navigate("/profile");
+    navigate("/");
   };
 
   return (
