@@ -1,57 +1,44 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
-import { useState, useEffect } from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+
+
+
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import ScanWaste from "./pages/ScanWaste";
 import DisposalStations from "./pages/DisposalStations";
 import Rewards from "./pages/Rewards";
-import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 
-function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) setUser(storedUser);
-  }, []);
+function Layout() {
+  const location = useLocation();
+  const hideNavbar = location.pathname === "/signup" || location.pathname === "/login";
 
   return (
+    <>
+      {!hideNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Navigate to="/signup" replace />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/scan" element={<ScanWaste />} />
+        <Route path="/stations" element={<DisposalStations />} />
+        <Route path="/rewards" element={<Rewards />} />
+      </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
     <Router>
-      <AppContent user={user} setUser={setUser} />
+      <Layout />
     </Router>
   );
 }
 
-function AppContent({ user, setUser }) {
-  const location = useLocation();
-  const hideNavbar =
-    location.pathname === "/login" || location.pathname === "/signup";
-
-  return (
-    <div className="min-h-screen bg-gray-100">
-      {!hideNavbar && <Navbar user={user} setUser={setUser} />}
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/" element={<Signup setUser={setUser} />} />
-        <Route path="/scan" element={<ScanWaste />} />
-        <Route path="/stations" element={<DisposalStations />} />
-        <Route path="/rewards" element={<Rewards />} />
-        <Route
-          path="/profile"
-          element={user ? <Profile user={user} /> : <Navigate to="/login" />}
-        />
-      </Routes>
-    </div>
-  );
-}
-
 export default App;
+
